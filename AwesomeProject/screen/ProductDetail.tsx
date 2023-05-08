@@ -4,13 +4,14 @@ import axios from "axios"
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+
 const ProductDetail = ({ route }: any) => {
 
     const [detail, setDetail] = useState<any>()
-    const [info, setInfo] = useState<any>()
-    const [favorite, setFavorite] = useState<any>()
+    // const [info, setInfo] = useState<any>()
+    // const [favorite, setFavorite] = useState<any>()
     const { id } = route.params
-
+    
     useEffect(() => {
         axios.get(`https://645402c7e9ac46cedf35a20e.mockapi.io/phones/${id}`)
             .then(resp => {
@@ -19,32 +20,20 @@ const ProductDetail = ({ route }: any) => {
     }, [])
 
 
-    useEffect(() => {
-        // AsyncStorage.getItem("info")
-        //     .then(resp => {
-        //         let infos = JSON.parse(resp ?? "[]");
-        //         setInfo(infos)
-        //     })
-        AsyncStorage.getItem("favorite")
-            .then(resp => {
-                let infos = JSON.parse(resp ?? "[]");
-                setFavorite(infos)
-            })
-    }, [])
+    // useEffect(() => {
+    //     AsyncStorage.getItem("info")
+    //         .then(resp => {
+    //             let infos = JSON.parse(resp ?? "[]");
+    //             setInfo(infos)
+    //         })
 
-    const addFavorite = ({ item }: any) => {
-        AsyncStorage.setItem("favorite", JSON.stringify([...favorite, item]))
-    }
-    
+    // }, [])
 
-    const renderItem = ({ item }: any) => {
-        return <>
-        
+    // const addFavorite = ({ item }: any) => {
+    //     AsyncStorage.setItem("favorite", JSON.stringify([...favorite, item]))
+    // }
 
     
-        </>
-      }
-
 
     return (
         <SafeAreaView>
@@ -98,7 +87,7 @@ const ProductDetail = ({ route }: any) => {
                     }}>$ {detail?.price}</Text>
                 </View>
             </View>
-            <TouchableOpacity>
+            <TouchableOpacity >
                 <View style={styles.basketView}>
                     <Text style={{
                         color: "white",

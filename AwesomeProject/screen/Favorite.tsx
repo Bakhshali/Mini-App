@@ -6,37 +6,38 @@ import { FlatList } from 'react-native-gesture-handler'
 
 const Favorite = () => {
 
-  const RenderItem = ({ item }: any) => {
-    return <>
-      <View style={styles.mainStyle} >
-        <View style={styles.cardStyle} >
-          <Image
-            style={styles.imageStyle}
-            source={{
-              uri: item.image,
-            }}
-          />
-          <Text style={styles.titleStyle}>{item.name}</Text>
-          <Text style={styles.priceStyle}>From $ {item.price}</Text>
-        </View>
-      </View>
-    </>
-  }
+  // const RenderItem = ({ item }: any) => {
+  //   return <>
 
-  const [favorite, setdata] = useState<any>([])
+  //   </>
+  // }
 
-  useFocusEffect(() => {
-    AsyncStorage.getItem("favorite").then((res) => {
-      let favor = JSON.parse(res ?? "[]")
-      setdata(favor)
-    })
-  })
-  
+  // const [favorite, setdata] = useState<any>([])
+
+  // useFocusEffect(() => {
+  //   AsyncStorage.getItem("favorite").then((res) => {
+  //     let favor = JSON.parse(res ?? "[]")
+  //     setdata(favor)
+  //   })
+  // })
+
   return (
-    <FlatList
-      data={favorite}
-      renderItem={RenderItem}
-    />
+    // <FlatList
+    //   data={favorite}
+    //   renderItem={RenderItem}
+    // />
+    <View style={styles.mainStyle} >
+      <View style={styles.cardStyle} >
+        <Image
+          style={styles.imageStyle}
+          source={{
+            uri: "https://i.ytimg.com/vi/FRaQVtJptfA/maxresdefault.jpg",
+          }}
+        />
+        <Text style={styles.titleStyle}>Apple iPhone</Text>
+        <Text style={styles.priceStyle}>From $ 450</Text>
+      </View>
+    </View>
   )
 }
 
