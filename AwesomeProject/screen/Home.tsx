@@ -8,17 +8,24 @@ import SvgSearch from '../src/components/icons/Search'
 const Home = ({ navigation }: any) => {
 
   const [phones, setProduct] = useState([])
-  const [text, setText] = useState('');
-
+  // const [text, setText] = useState('');
+  const [searchs,setSearch] = useState([])
   useEffect(() => {
     axios.get("https://645402c7e9ac46cedf35a20e.mockapi.io/phones")
       .then((resp => {
         setProduct(resp.data)
+        setSearch(resp.data)
       }))
   }, [])
 
   const goToDetail = (id: any) => {
     navigation.navigate("ProductDetail", { id: id })
+  }
+
+  
+  const search = (value: string) => {
+    let searchSys = searchs.filter((q: { name: string; }) => q.name.toLowerCase().includes(value.toLowerCase()));
+    setProduct([...searchSys]);
   }
 
   const RenderItem = ({ item }: any) => {
@@ -45,12 +52,12 @@ const Home = ({ navigation }: any) => {
 
   return (
     <View>
-      <View>
+      <View><SvgSearch style={styles.iconStyle}/>
         {/* <SvgSearch style={styles.iconStyle} width={30} height={30} /> */}
-        <TextInput style={styles.inputStyle} placeholder='Search'
-          value={text}
-          onChangeText={setText}
+        <TextInput  style={styles.inputStyle} placeholder='Search'
+         onChangeText={search}
           placeholderTextColor="gray"
+          
         ></TextInput>
       </View>
       <View style={styles.titleStyle}>
@@ -125,7 +132,9 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     marginTop: 20,
     borderColor: "gray",
-    height: 60
+    height: 50,
+    paddingLeft:50,
+    color:"black"
 
   },
 
@@ -147,7 +156,10 @@ const styles = StyleSheet.create({
 
   iconStyle: {
     position: "absolute",
-
+    width:20,
+    height:20,
+    top:35,
+    left:37
   }
 })
 

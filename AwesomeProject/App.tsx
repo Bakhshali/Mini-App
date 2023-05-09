@@ -14,6 +14,7 @@ import SvgHeart from './src/components/icons/Heart';
 import SvgBuy from './src/components/icons/Buy';
 import { Button } from 'react-native/Libraries/Components/Button';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import Splash from './screen/Splash';
 
 const Tab = createBottomTabNavigator()
 const Stack = createStackNavigator()
@@ -22,16 +23,18 @@ const HomeStack = () => {
   return (
     <Tab.Navigator>
       <Tab.Screen name='Home' component={Home} options={{
+        tabBarShowLabel:false,
         tabBarIcon: ({ focused }) => (
           <SvgHome style={{
             width: 30,
             height: 30,
             stroke: focused ? "blue" : "#200E32",
-            fill: focused ? "blue" : "none"
+            fill: focused ? "blue" : "none",
           }} />
         )
       }} />
       <Tab.Screen name='Profile' component={Profile} options={{
+        tabBarShowLabel:false,
         tabBarIcon: ({ focused }) => (
           <SvgProfile style={{
             width: 30,
@@ -42,10 +45,11 @@ const HomeStack = () => {
         )
       }} />
       <Tab.Screen name='Favorite' component={Favorite} options={{
+        tabBarShowLabel:false,
         tabBarIcon: ({ focused }) => (
           <SvgHeart style={{
-            width: 30,
-            height: 30,
+            width: 24,
+            height: 24,
             stroke: focused ? "blue" : "#200E32",
             fill: focused ? "blue" : "none"
           }} />
@@ -53,6 +57,7 @@ const HomeStack = () => {
         
       }} />
       <Tab.Screen name='Basket' component={Basket} options={{
+        tabBarShowLabel:false,
         tabBarIcon: ({ focused }) => (
           <SvgBuy style={{
             width: 30,
@@ -68,31 +73,18 @@ const HomeStack = () => {
 
 const App = () => {
 
-  const [iconColor, setIconColor] = useState('none');
-
-  const handleIconPress = () => {
-    setIconColor('red');
-  };
 
   return (
     <NavigationContainer>
       <Stack.Navigator>
+        <Stack.Screen name='Splash'  options={{
+          title:"",
+          headerShown:false
+        }} component={Splash}></Stack.Screen>
         <Stack.Screen name='HomeStack' options={{ headerShown: false }} component={HomeStack} />
         <Stack.Screen name='ProductDetail' component={ProductDetail} options={{
           title: "",
-          headerRight: () => (
-            <View style={styles.heartIcon} >
-            <TouchableOpacity onPress={handleIconPress}  >
-            <SvgHeart
-                style={{
-                  width: 30,
-                  height: 30,
-                  stroke: iconColor ,
-                }} 
-              />
-            </TouchableOpacity>
-            </View>
-          ),
+          headerShown:false
           
         }}  />
       </Stack.Navigator>

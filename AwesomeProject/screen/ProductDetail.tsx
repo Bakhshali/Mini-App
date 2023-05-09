@@ -4,14 +4,14 @@ import axios from "axios"
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import SvgHeart from '../src/components/icons/Heart'
+import { Title } from 'react-native-paper'
 
 const ProductDetail = ({ route }: any) => {
 
     const [detail, setDetail] = useState<any>()
-    // const [info, setInfo] = useState<any>()
-    // const [favorite, setFavorite] = useState<any>()
     const { id } = route.params
-    
+
     useEffect(() => {
         axios.get(`https://645402c7e9ac46cedf35a20e.mockapi.io/phones/${id}`)
             .then(resp => {
@@ -19,25 +19,82 @@ const ProductDetail = ({ route }: any) => {
             })
     }, [])
 
+    const addFavorite = async () => {
+        let favorites: any = await AsyncStorage.getItem("favorite")
 
-    // useEffect(() => {
-    //     AsyncStorage.getItem("info")
-    //         .then(resp => {
-    //             let infos = JSON.parse(resp ?? "[]");
-    //             setInfo(infos)
-    //         })
+        if (!favorites) {
+            favorites = []
+            let newItems = {
+                product: detail
+            }
+            favorites.push(newItems)
 
-    // }, [])
+            await AsyncStorage.setItem("favorite", JSON.stringify(favorites))
+        }
+        else {
+            let parseFavorite = JSON.parse(favorites)
+            let wishlistItem = parseFavorite.find((c: any) => c.product.id == detail.id)
+            if (wishlistItem) {
+                await AsyncStorage.setItem("favorite", JSON.stringify(parseFavorite));
+            }
+            else {
+                let wishlistItem = {
+                    product: detail,
+                }
+                parseFavorite.push(wishlistItem);
+                console.log(parseFavorite);
 
-    // const addFavorite = ({ item }: any) => {
-    //     AsyncStorage.setItem("favorite", JSON.stringify([...favorite, item]))
-    // }
+                await AsyncStorage.setItem('favorite', JSON.stringify(parseFavorite));
+            }
 
-    
+        }
+
+
+
+
+
+    }
+
+    const AddToBasket = async () => {
+        let basket: any = await AsyncStorage.getItem("basket");
+
+        if (!basket) {
+            basket = []
+            let basketItem = {
+                product: detail,
+                count: 1
+            }
+            basket.push(basketItem)
+            await AsyncStorage.setItem("basket", JSON.stringify(basket))
+        }
+        else {
+            let parseBasket = JSON.parse(basket)
+            let basketItem = parseBasket.find((c: any) => c.product.id == detail.id)
+
+            if (basketItem) {
+                basketItem.count++
+                await AsyncStorage.setItem("basket", JSON.stringify(parseBasket));
+            }
+            else {
+                let basketItem = {
+                    product: detail,
+                    count: 1
+                }
+                parseBasket.push(basketItem);
+                await AsyncStorage.setItem('basket', JSON.stringify(parseBasket));
+            }
+        }
+    }
+
+
 
     return (
         <SafeAreaView>
+
             <View style={styles.contanier}>
+                <View style={{ position: "absolute", top: 18, right: 13, zIndex:1}}><TouchableOpacity>
+                    <SvgHeart width={32} height={32} style={{ stroke: "#200E32", fill: "none",width:24,heigth:24 }} onPress={addFavorite} />
+                </TouchableOpacity></View>
                 <Image
                     style={styles.imageView}
                     source={{
@@ -49,6 +106,7 @@ const ProductDetail = ({ route }: any) => {
                     color: "black", fontSize: 20,
                     fontWeight: "700"
                 }}>Colors</Text>
+
                 <View style={{
                     width: 110,
                     height: 40,
@@ -87,7 +145,7 @@ const ProductDetail = ({ route }: any) => {
                     }}>$ {detail?.price}</Text>
                 </View>
             </View>
-            <TouchableOpacity >
+            <TouchableOpacity onPress={AddToBasket} >
                 <View style={styles.basketView}>
                     <Text style={{
                         color: "white",
@@ -108,9 +166,9 @@ const styles = StyleSheet.create({
     },
 
     imageView: {
-        width: 350,
+        width: 320,
         height: 300,
-        borderRadius: 10
+        borderRadius: 5,
     },
 
     title: {
@@ -137,7 +195,7 @@ const styles = StyleSheet.create({
     priceMainView: {
         flexDirection: "row",
         justifyContent: "space-between",
-        marginTop: 5,
+        marginTop: 20,
     },
 
     basketView: {

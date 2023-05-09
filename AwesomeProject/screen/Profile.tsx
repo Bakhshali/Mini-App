@@ -1,5 +1,6 @@
 import { View, Text, StyleSheet, Image } from 'react-native'
 import React from 'react'
+import SvgLocation from '../src/components/icons/Location'
 
 const Profile = () => {
   return (
@@ -18,15 +19,18 @@ const Profile = () => {
       <Text style={{
         fontSize: 18,
         width:220,
-        marginTop:10,
+        marginTop:3,
+        color:"black",
         textAlign:"center",
       }}>
+        <SvgLocation/>
         Address: 43 NewYork City M13 4GR America,USA
       </Text>
     </View>
   )
 }
 const styles = StyleSheet.create({
+  
   imageStyle: {
     width: 100,
     height: 100,
